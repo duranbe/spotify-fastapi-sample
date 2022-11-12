@@ -1,2 +1,2 @@
 # spotify-fastapi-sample
-Spotify API Sample
+Spotify API Sample using FastApi
