@@ -1,8 +1,7 @@
 # spotify-fastapi-sample
 Spotify API Sample using FastApi
 
-## Run Command
-`
-cd src
+## Run 
+```
 uvicorn main:app --reload
-`
+```
