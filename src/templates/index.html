@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <div id="container">
+        
+        </div> 
+    </body>
+</html>
+
+<style>
+
+html, body {
+  height: 100%;
+  margin: 0;
+  background-color: rgb(236, 236, 236);
+  font-family: Helvetica, sans-serif;
+}
+
+
+#container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+
+}
+#user-info{
+    background-color: white;
+    border:1rem;
+    padding: 1.2rem;
+    margin: 1rem;
+    border-radius: 0.8rem;
+    
+}
+
+#error-box{
+    background-color: white;
+    border: 0.2rem solid rgb(236, 133, 133);
+    padding: 1.2rem;
+    margin: 1rem;
+    border-radius: 0.8rem;
+}
+
+.btn{
+
+    background-color: rgb(28, 98, 229);
+    border: 1px;
+    border-radius: 0.2rem;
+    width: 10rem;
+    height: 2rem;
+    color: white;
+    
+}
+
+.btn:hover, .btn:active{
+    background-color: rgb(57, 117, 227);
+}
+
+.login{
+    text-decoration: none;
+    color: white;
+}
+
+</style>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+
+
+    var container = document.getElementById("container");
+    
+    function refreshToken(){
+
+        var cookie = getCookie("refreshToken");
+
+        axios.get("/refresh_token",{ params : {"refresh_token":cookie}})
+        .then(function(response){
+            document.cookie = "accessToken="+response.data['access_token'];
+        })
+        .catch(function (error) {
+            container.innerHTML = `Error`
+        });
+    }
+    
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+  
+    if(getCookie("accessToken")!=null){
+        
+        axios.get('https://api.spotify.com/v1/me', {headers: { "Authorization": `Bearer ${getCookie("accessToken")}` }})
+        .then(function (response) {
+        
+            container.innerHTML = 
+            `
+                <div id="user-info">
+                    <img src=${response.data.images[0].url} style="border-radius: 50%"></img>
+                    <p><b>Username : </b>${response.data.display_name}</p>
+                    <p><b>Country: </b>${response.data.country}</p>
+                    <p><b>Email : </b>${response.data.email}</p>
+                    <p><b>Profile : </b><a href="${response.data.external_urls.spotify}">${response.data.external_urls.spotify}</a></p>
+                    <button class="btn" onClick="refreshToken()">Refresh Token</button>
+                </div>
+            `
+        })
+        .catch(function (error) {
+            console.log(error)
+            container.innerHTML = `<div id="error-box"> ${error.response.data.error.message} </div>` 
+            
+        });
+        
+
+    }else{
+        container.innerHTML = `
+        <div>
+                <a class="login" href="/login"><button class="btn">Login</button></a>
+            </div>      `
+    }
+
+   
+
+</script>
