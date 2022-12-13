@@ -2,6 +2,7 @@ import random
 import math
 import requests
 import base64
+import os
 from urllib.parse import urlencode
 from fastapi import FastAPI, Response, Request, HTTPException
 from fastapi.responses import RedirectResponse, HTMLResponse
