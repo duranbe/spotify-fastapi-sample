@@ -1,16 +1,25 @@
 # spotify-fastapi-sample
 Spotify API Sample using FastApi
 
-Spotify API Quickstart guide : https://developer.spotify.com/documentation/web-api/quick-start/
+Spotify API Quickstart guide: https://developer.spotify.com/documentation/web-api/quick-start/
 
-## Run 
-To get started : 
+## How to Use
 
-```bash
-git clone git@github.com:duranbe/spotify-fastapi-sample.git 
-cd spotify-fastapi-sample
-pip install -r requirements.txt
-cd src
-uvicorn main:app --reload
-```
-Note : be sure to have created an env file and source it
+1. Clone repo & set up virtual environment
+
+    ```bash
+    git clone git@github.com:duranbe/spotify-fastapi-sample.git 
+    cd spotify-fastapi-sample
+    python -m venv venv
+    source venv/bin/activate
+    pip install -r requirements.txt
+    ```
+
+2. Edit `example.env` with your Spotify API credentials
+3. Load values into environment variables & run app
+
+    ```bash
+    source example.env
+    cd src
+    uvicorn main:app --reload
+    ```
